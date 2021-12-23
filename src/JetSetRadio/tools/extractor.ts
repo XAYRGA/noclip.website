@@ -254,7 +254,7 @@ function extractTexLoadTable(texChunk: TexChunk, execBuffer: ArrayBufferSlice, t
     let depth = 0;
     let tableOffs = tableAddr - EXECUTABLE_ALLOCATION_ADDRESS;
     while (true) {
-        if (depth==maxDepth&&maxDepth!=0)
+        if (depth === maxDepth&&maxDepth !== 0)
             break;
 
         depth++;
@@ -266,20 +266,20 @@ function extractTexLoadTable(texChunk: TexChunk, execBuffer: ArrayBufferSlice, t
         const texPackTableAddr = view.getUint32(tableOffs + 0x0C, true);
         let texListType = view.getUint32(tableOffs + 0x10, true);
         tableOffs += 0x20;
-        if (texPackTableAddr === 0x00000000 && afsFileID===0 && afsIndex===0 && texListType===0 && texLoadAddr===0)
+        if (texPackTableAddr === 0x00000000 && afsFileID === 0 && afsIndex === 0 && texListType === 0 && texLoadAddr === 0)
             break;
-        if (texPackTableAddr===0) 
+        if (texPackTableAddr === 0) 
             continue;
         if (texLoadOverride > 0)
             texLoadAddr = texLoadOverride;
         // xayrga: will we ever load the segalogo?
-        if (afsFileID===0)
+        if (afsFileID === 0)
             continue;
         const afsFilename = filenames[afsFileID];
         if (!afsFilename)
             continue;
         const txpFile = afsLoad(afsFilename, afsIndex);
-        if (texListType===0)
+        if (texListType === 0)
             continue;
         if (textableFormatOverride > 0)
             texListType = textableFormatOverride;
@@ -308,7 +308,7 @@ function extractModelTable(execBuffer: ArrayBufferSlice, texlists: Texlist[], af
         const modelOffs = modelAddr - STAGE_ALLOCATION_ADDRESS;
         const texlistAddr = texlistTable[i];
         const texlistIndex = findTexlistIndex(texlists, texlistAddr);
-        if (texlistIndex < 0 && texlistAddr!=0)
+        if (texlistIndex < 0 && texlistAddr !== 0)
             console.warn(`Model ${hexzero0x(modelTableAddr)} / ${hexzero0x(i, 2)} (NJ addr ${hexzero0x(modelAddr)}) could not find texlist with addr: ${hexzero0x(texlistAddr)}`);
         models.push({ ... afsFile.getRefData(), Offset: modelOffs, TexlistIndex: texlistIndex });
     }
